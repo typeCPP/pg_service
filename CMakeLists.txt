@@ -9,7 +9,7 @@ add_subdirectory(third_party/userver)
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-	src/utility/vars.hpp
+	src/utility/common.hpp
     src/hello.hpp
     src/hello.cpp
 	src/model/artist.hpp
