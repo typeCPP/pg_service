@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 project(pg_service_template CXX)
 
-include(/home/andrey/repositories/userver/cmake/SetupEnvironment.cmake)
+include(third_party/userver/cmake/SetupEnvironment.cmake)
 include(GNUInstallDirs)
 
-add_subdirectory(/home/andrey/repositories/userver thirdparty/userver)
+add_subdirectory(third_party/userver)
 
 
 # Common sources
