@@ -8,6 +8,10 @@
 #include <userver/storages/postgres/component.hpp>
 #include <userver/utils/assert.hpp>
 
+#include "utility/common.hpp"
+#include "repositories/artists_repository.hpp"
+#include "services/artists_service.hpp"
+
 namespace pg_service_template {
 
 namespace {
@@ -21,7 +25,7 @@ class Hello final : public userver::server::handlers::HttpHandlerBase {
       : HttpHandlerBase(config, component_context),
         pg_cluster_(
             component_context
-                .FindComponent<userver::components::Postgres>("postgres-db-1")
+                .FindComponent<userver::components::Postgres>(DATABASE_NAME)
                 .GetCluster()) {}
 
   std::string HandleRequestThrow(
@@ -33,11 +37,12 @@ class Hello final : public userver::server::handlers::HttpHandlerBase {
     if (!name.empty()) {
       auto result = pg_cluster_->Execute(
           userver::storages::postgres::ClusterHostType::kMaster,
-          "INSERT INTO hello_schema.users(name, count) VALUES($1, 1) "
+          "INSERT INTO public.users(name, count) VALUES($1, 1) "
           "ON CONFLICT (name) "
           "DO UPDATE SET count = users.count + 1 "
           "RETURNING users.count",
           name);
+      return ArtistsService::getAllArtists(pg_cluster_);
 
       if (result.AsSingleRow<int>() > 1) {
         user_type = UserType::kKnown;
@@ -69,7 +74,7 @@ std::string SayHelloTo(std::string_view name, UserType type) {
 
 void AppendHello(userver::components::ComponentList& component_list) {
   component_list.Append<Hello>();
-  component_list.Append<userver::components::Postgres>("postgres-db-1");
+  component_list.Append<userver::components::Postgres>(DATABASE_NAME);
   component_list.Append<userver::clients::dns::Component>();
 }
 

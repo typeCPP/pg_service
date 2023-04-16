@@ -60,5 +60,10 @@
     "postgres-db-1": {
       "max_statement_metrics": 5
     }
+  },
+  "POSTGRES_CONNLIMIT_MODE_AUTO_ENABLED": true,
+  "USERVER_BAGGAGE_ENABLED": false,
+  "BAGGAGE_SETTINGS": {
+    "allowed_keys": ["foo","bar"]
   }
 }
