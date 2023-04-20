@@ -8,8 +8,12 @@
 
 class ArtistsRepository {
 public:
-    static std::vector<Artist> getAllArtists(userver::storages::postgres::ClusterPtr pgCluster);
+    static std::vector <Artist> getAllArtists(userver::storages::postgres::ClusterPtr pgCluster);
+
     static Artist getArtistById(userver::storages::postgres::ClusterPtr pgCluster, long id);
+
+    static bool insertArtist(userver::storages::postgres::ClusterPtr pgCluster, std::string name, int totalListeners,
+                             std::string photoSrc);
 };
 
 #endif
